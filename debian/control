@@ -1,0 +1,16 @@
+Source: indi-aagcloudwatcher-solo
+Section: science
+Priority: optional
+Maintainer: Philipp Weber <philipp@whyisitso.de>
+Build-Depends: debhelper-compat (= 12), libindi-dev, libtool, libz-dev, libnova-dev, libcurl4-gnutls-dev
+Standards-Version: 4.5.0
+Homepage: https://github.com/comptonizing/indi-aagcloudwatcher-solo
+
+Package: indi-aagcloudwatcher-solo
+Architecture: amd64
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}, libindi1, libcurl4-gnutls
+Description: INDI driver for the AAG Cloudwatcher Solo
+ This package contains the INDI driver for the AAG Cloudwatcher Solo.
+ .
+ This driver is compatible with any INDI client such as KStars or Xephem.
