@@ -59,9 +59,12 @@ AS_IF([ [[ "${indiloc}" != "notgiven" ]] ],
       [LDFLAGS="$LDFLAGS -L${indiloc}/lib" && CXXFLAGS="$CXXFLAGS -isystem ${indiloc}/include/libindi" && AC_SUBST([INDILOC], [$indiloc])],
       [])
 
+AC_CHECK_HEADER([curl/curl.h], [], [AC_MSG_ERROR([curl developement headers not found!])], [])
+
 AC_SEARCH_LIBS(sin, m, [], [AC_MSG_ERROR([No math library found!])], [])
 AC_SEARCH_LIBS(compress, z, [], [AC_MSG_ERROR([z library not found!])], [])
 AC_SEARCH_LIBS(ln_deg_to_dms, nova, [], [AC_MSG_ERROR([nova library not found!])], [])
+AC_SEARCH_LIBS(curl_global_init, curl, [], [AC_MSG_ERROR([curl library not found!])], [])
 LIBS="-lindidriver $LIBS"
 
 
