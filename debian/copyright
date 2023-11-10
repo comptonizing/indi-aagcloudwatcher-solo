@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: indi-pollux-powerbox
+Upstream-Name: indi-aagcloudwatcher-solo
 Upstream-Contact: Philipp Weber <philipp@whyisitso.de>
-Source: https://github.com/comptonizing/powerbox
+Source: https://github.com/comptonizing/indi-aagcloudwatcher-solo
 
 Files:     Makefile.in
            aclocal.m4
