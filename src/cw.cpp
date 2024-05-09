@@ -125,13 +125,17 @@ void CloudwatcherSolo::ISGetProperties(const char *dev) {
 }
 
 bool CloudwatcherSolo::Connect() {
-	if ( addressTP[0].getText() == nullptr ) {
+	if ( addressTP[0].getText() == nullptr || strcmp(addressTP[0].getText(), "") == 0 ) {
 		LOG_ERROR("You must set the address first!");
+        INDI::Weather::Disconnect();
 		return false;
 	}
 	if ( ! updateRaw() ) {
 		return false;
 	}
+    if ( ! updateWeather() ) {
+        return false;
+    }
 	return true;
 }
 
@@ -148,6 +152,7 @@ bool CloudwatcherSolo::ISNewText(const char *dev, const char *name, char *texts[
 			saveConfig(true, addressTP.getName());
 			return true;
 		}
+	    return INDI::Weather::ISNewText(dev, name, texts, names, n);
 	}
 	return INDI::Weather::ISNewText(dev, name, texts, names, n);
 }
@@ -293,23 +298,18 @@ bool CloudwatcherSolo::initProperties() {
 	}
 
 	addParameter("WEATHER_SAFE", "Safe", 1, 1, 0);
-	setCriticalParameter("WEATHER_SAFE");
 	addParameter("WEATHER_SWITCH", "Switch", 1, 1, 0);
 	addParameter("WEATHER_SKYTEMP", "Sky Temperature [°C]", -100, -20, 10);
-	setCriticalParameter("WEATHER_SKYTEMP");
 	addParameter("WEATHER_TEMP", "Temperature [°C]", -30, 50, 10);
 	addParameter("WEATHER_SKY_QUALITY", "Sky Brightness [mag/arcsec^2]", 15, 23, 10);
 	if ( m_lastData->wind != NAN ) {
-		addParameter("WEATHER_WIND", "Wind [km/h]", 0, 20, 10);
-		setCriticalParameter("WEATHER_WIND");
+		addParameter("WEATHER_WIND", "Wind [km/h]", 0, 40, 10);
 	}
 	if ( m_lastData->gust != NAN ) {
 		addParameter("WEATHER_GUST", "Gust [km/h]", 0, 40, 10);
-		setCriticalParameter("WEATHER_GUST");
 	}
 	if ( m_lastData->rain != NAN ) {
 		addParameter("WEATHER_RAIN", "Rain [a.u.]", 2900, 3200, 10);
-		setCriticalParameter("WEATHER_RAIN");
 	}
 	if ( m_lastData->hum != NAN ) {
 		addParameter("WEATHER_HUMIDITY", "Humidity [%]", 0, 100, 0);
@@ -322,6 +322,18 @@ bool CloudwatcherSolo::initProperties() {
 	}
 	if ( m_lastData->relpress != NAN ) {
 		addParameter("WEATHER_RELPRESS", "Relative Pressure [mbar]", 500, 1500, 0);
+	}
+
+	setCriticalParameter("WEATHER_SAFE");
+	setCriticalParameter("WEATHER_SKYTEMP");
+	if ( m_lastData->wind != NAN ) {
+		setCriticalParameter("WEATHER_WIND");
+	}
+	if ( m_lastData->gust != NAN ) {
+		setCriticalParameter("WEATHER_GUST");
+	}
+	if ( m_lastData->rain != NAN ) {
+		setCriticalParameter("WEATHER_RAIN");
 	}
 
 	addDebugControl();
