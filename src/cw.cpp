@@ -297,8 +297,8 @@ bool CloudwatcherSolo::initProperties() {
 		return false;
 	}
 
-	addParameter("WEATHER_SAFE", "Safe", 1, 1, 0);
-	addParameter("WEATHER_SWITCH", "Switch", 1, 1, 0);
+	addParameter("WEATHER_SAFE", "Safe", 0.9, 1.1, 0);
+	addParameter("WEATHER_SWITCH", "Switch", 0.9, 1.1, 0);
 	addParameter("WEATHER_SKYTEMP", "Sky Temperature [°C]", -100, -20, 10);
 	addParameter("WEATHER_TEMP", "Temperature [°C]", -30, 50, 10);
 	addParameter("WEATHER_SKY_QUALITY", "Sky Brightness [mag/arcsec^2]", 15, 23, 10);
